@@ -1,17 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="style.css" rel="stylesheet" />
-  <title>Drawing with Sockets and p5</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jam Room</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/p5@1.11.10/lib/p5.js"></script>
+  <div id="bar">
+    <h1>Jam Room</h1>
+    <span id="users">1 person here</span>
+    <div class="group" id="instruments" role="group" aria-label="Instrument"></div>
+    <div class="group">
+      <button id="play" aria-pressed="false">Play</button>
+      <button id="clear">Clear</button>
+      <button id="sound">Enable sound</button>
+    </div>
+  </div>
+  <div id="roll"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
   <script src="app.js"></script>
 </body>
-
 </html>
