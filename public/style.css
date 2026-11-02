@@ -1,5 +1,223 @@
-html,
-body {
-    background-color: white;
-    font-family: Arial, Helvetica, sans-serif;
+@font-face {
+  font-family: "Orbitron";
+  src: url(Font/Orbitron.ttf);
+  font-weight: 400 900;
 }
+
+:root {
+  --field: #3d6bff;   /* the one big flat color: swap it for any saturated color */
+  --ink: #0c1a52;
+  --white: #ffffff;
+  --chrome-hi: #fafcff;
+  --chrome-mid: #cfd6e6;
+  --chrome-lo: #a9b3c9;
+  --pink: #ff2fa8;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background-color: var(--field);
+  color: var(--ink);
+  font-family: "Orbitron", "Trebuchet MS", system-ui, sans-serif;
+}
+
+body { display: flex; flex-direction: column; gap: 18px; padding: 18px 22px 22px; overflow: hidden; }
+
+/* Faint halftone dots that fade out toward the bottom */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, .2) 30%, transparent 31%);
+  background-size: 16px 16px;
+  -webkit-mask-image: linear-gradient(to bottom, #000, transparent 65%);
+  mask-image: linear-gradient(to bottom, #000, transparent 65%);
+}
+
+/* Every section is a boxy window: hard border, hard shadow, title bar */
+.window {
+  display: flex;
+  flex-direction: column;
+  border: 3px solid var(--ink);
+  box-shadow: 6px 6px 0 var(--ink);
+  background: var(--chrome-mid);
+}
+
+#roll-window { flex: 1; min-height: 0; }
+
+.titlebar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 8px;
+  border-bottom: 3px solid var(--ink);
+  font-size: .65rem;
+  font-weight: 900;
+  letter-spacing: .14em;
+  background: linear-gradient(to bottom, var(--chrome-hi) 0%, var(--chrome-mid) 49%, var(--chrome-lo) 50%, var(--chrome-mid) 100%);
+}
+
+.wbtns { display: flex; gap: 5px; }
+
+.wbtns i {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--ink);
+  background: var(--chrome-hi);
+}
+
+.wbtns i:last-child { background: var(--pink); }
+
+#bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 22px;
+  align-items: center;
+  padding: 14px 16px;
+  background: var(--chrome-mid);
+  box-shadow: inset 2px 2px 0 var(--chrome-hi);
+}
+
+/* Chrome lettering: silver gradient text with a hard shadow */
+h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 900;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--ink);
+  text-shadow: 2px 2px 0 var(--chrome-hi);
+}
+
+/* LED readout box */
+#users {
+  padding: 6px 10px;
+  border: 2px solid var(--ink);
+  background: var(--ink);
+  color: #5dff9a;
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  box-shadow: inset 2px 2px 0 rgba(255, 255, 255, .15);
+}
+
+.group { display: flex; gap: 8px; align-items: center; }
+
+/* Square beveled buttons */
+button {
+  font: inherit;
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  cursor: pointer;
+  padding: 9px 14px;
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  background: linear-gradient(to bottom, var(--chrome-hi) 0%, var(--chrome-mid) 49%, var(--chrome-lo) 50%, var(--chrome-mid) 100%);
+  box-shadow: inset 2px 2px 0 var(--white), inset -2px -2px 0 var(--chrome-lo), 3px 3px 0 var(--ink);
+}
+
+button:hover { filter: brightness(1.07); }
+
+button:active {
+  transform: translate(3px, 3px);
+  box-shadow: inset 2px 2px 0 var(--chrome-lo);
+}
+
+button:focus-visible { outline: 3px solid var(--pink); outline-offset: 3px; }
+
+/* Instrument buttons carry a square pad in their sound's color */
+button.inst { display: inline-flex; align-items: center; gap: 8px; }
+
+button.inst::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--ink);
+  background: var(--c);
+  box-shadow: inset 2px 2px 0 rgba(255, 255, 255, .7);
+}
+
+button.inst[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--white);
+  transform: translate(3px, 3px);
+  box-shadow: none;
+}
+
+#play[aria-pressed="true"] { background: var(--pink); color: var(--white); }
+
+#sound.on { display: none; }
+
+/* The roll body: a deep blue screen inside the window */
+#roll {
+  flex: 1;
+  min-height: 0;
+  background: rgba(12, 26, 82, .55);
+  box-shadow: inset 3px 3px 0 rgba(0, 0, 0, .35);
+}
+
+#roll canvas { display: block; }
+
+/* Tempo slider: boxy chrome handle on a dark track, labeled Slow / Fast */
+.tempo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: .65rem;
+  font-weight: 900;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.tempo input {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 160px;
+  height: 28px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.tempo input::-webkit-slider-runnable-track {
+  height: 12px;
+  border: 2px solid var(--ink);
+  background: var(--ink);
+}
+
+.tempo input::-moz-range-track {
+  height: 8px;
+  border: 2px solid var(--ink);
+  background: var(--ink);
+}
+
+.tempo input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 26px;
+  margin-top: -9px;
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  background: linear-gradient(to bottom, var(--chrome-hi), var(--chrome-mid) 49%, var(--chrome-lo) 50%, var(--chrome-mid));
+  box-shadow: inset 2px 2px 0 var(--white), 3px 3px 0 var(--ink);
+}
+
+.tempo input::-moz-range-thumb {
+  width: 16px;
+  height: 22px;
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  background: linear-gradient(to bottom, var(--chrome-hi), var(--chrome-mid) 49%, var(--chrome-lo) 50%, var(--chrome-mid));
+  box-shadow: inset 2px 2px 0 var(--white), 3px 3px 0 var(--ink);
+}
+
+.tempo input:focus-visible { outline: 3px solid var(--pink); outline-offset: 4px; }

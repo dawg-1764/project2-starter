@@ -1,17 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="style.css" rel="stylesheet" />
-  <title>Drawing with Sockets and p5</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jam Room</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/p5@1.11.10/lib/p5.js"></script>
+  <div class="window">
+    <div class="titlebar">
+      <span>JAM_ROOM.EXE</span>
+      <span class="wbtns" aria-hidden="true"><i></i><i></i><i></i></span>
+    </div>
+    <div id="bar">
+      <h1>Jam Room</h1>
+      <span id="users">1 person here</span>
+      <div class="group" id="instruments" role="group" aria-label="Instrument"></div>
+      <label class="tempo">
+        <span>Slow</span>
+        <input id="tempo" type="range" min="80" max="160" step="1" value="110" aria-label="Tempo, slow to fast">
+        <span>Fast</span>
+      </label>
+      <div class="group">
+        <button id="play" aria-pressed="false">Play</button>
+        <button id="clear">Clear</button>
+        <button id="sound">Enable sound</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="window" id="roll-window">
+    <div class="titlebar">
+      <span>PIANO_ROLL</span>
+      <span class="wbtns" aria-hidden="true"><i></i><i></i><i></i></span>
+    </div>
+    <div id="roll"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
   <script src="app.js"></script>
 </body>
-
 </html>
